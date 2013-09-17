@@ -113,7 +113,7 @@ public class Level {
 	 *           The horizontal alignment
 	 * @param y
 	 *           The vertical alignment
-	 * @return If the mob is solid or not
+	 * @return If the tile is solid or not
 	 */
 	public Tile getTile(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height) return Tile.nothing;
