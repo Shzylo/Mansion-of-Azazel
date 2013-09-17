@@ -1,30 +1,33 @@
-package me.shzylo.mansionazazelvisual.level;
+package me.shzylo.mansionazazel.level;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Represents the spawn level
+ */
 public class SpawnLevel extends Level {
 
-  public SpawnLevel(String path) {
+	public SpawnLevel(String path) {
 		super(path);
 	}
 
+	@Override
 	protected void loadLevel(String path) {
 		try {
 			BufferedImage image = ImageIO.read(SpawnLevel.class.getResource(path));
 			int w = width = image.getWidth();
 			int h = height = image.getHeight();
 			tiles = new int[w * h];
-			image.getRGB(0, 0, w, h, tiles, 0, w);
+			image.getRGB(0, 0, w, h, tiles, 0, width);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("System Failed.");
 		}
 	}
 
+	@Override
 	protected void generateLevel() {
-
 	}
 }
