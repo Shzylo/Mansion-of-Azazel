@@ -1,11 +1,14 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * Dirt road<br><br>
+ * <b>Solid Tile</b>
+ */
 public class DirtRoadTile extends Tile {
-
-  public DirtRoadTile(Sprite sprite) {
+	public DirtRoadTile(Sprite sprite) {
 		super(sprite);
 	}
 
