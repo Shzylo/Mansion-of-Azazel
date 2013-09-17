@@ -1,11 +1,14 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * First piece of the car<br><br>
+ * <b>Solid Tile</b>
+ */
 public class Car_0Tile extends Tile {
-
-  public Car_0Tile(Sprite sprite) {
+	public Car_0Tile(Sprite sprite) {
 		super(sprite);
 	}
 
