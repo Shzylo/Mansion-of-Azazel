@@ -1,11 +1,14 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * The transaction from the paved-road turning into dirt road on the left side<br><br>
+ * <b>Solid Tile</b>
+ */
 public class DirtRoadDicipateLTile extends Tile {
-
-  public DirtRoadDicipateLTile(Sprite sprite) {
+	public DirtRoadDicipateLTile(Sprite sprite) {
 		super(sprite);
 	}
 
