@@ -1,18 +1,21 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
-public class TreeTop_BottomTile extends Tile {
-
-  public TreeTop_BottomTile(Sprite sprite) {
+/**
+ * The bottom-side leafs of a tree<br><br>
+ * <b>Solid Tile</b>
+ */
+public class TreeLeaf_BottomTile extends Tile {
+	public TreeLeaf_BottomTile(Sprite sprite) {
 		super(sprite);
 	}
-	
+
 	public void render(int x, int y, Screen screen) {
 		screen.renderTile(x << 4, y << 4, this);
 	}
-
+	
 	public boolean isSolid() {
 		return true;
 	}
