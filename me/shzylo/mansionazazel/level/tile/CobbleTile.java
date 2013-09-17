@@ -1,11 +1,13 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * Cobble Tile, used as a pathway.
+ */
 public class CobbleTile extends Tile {
-
-  public CobbleTile(Sprite sprite) {
+	public CobbleTile(Sprite sprite) {
 		super(sprite);
 	}
 
