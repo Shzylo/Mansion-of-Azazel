@@ -1,4 +1,4 @@
-package me.shzylo.mansionazazelvisual;
+package me.shzylo.mansionazazel;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -8,88 +8,77 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
-import me.shzylo.mansionazazelvisual.entity.mob.Player;
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.input.Keyboard;
-import me.shzylo.mansionazazelvisual.input.StartMenuKeys;
-import me.shzylo.mansionazazelvisual.level.Level;
-import me.shzylo.mansionazazelvisual.level.TileCoordinate;
+import me.shzylo.mansionazazel.entity.mob.Ghost;
+import me.shzylo.mansionazazel.entity.mob.Player;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.input.Keyboard;
+import me.shzylo.mansionazazel.level.Level;
+import me.shzylo.mansionazazel.level.TileCoordinate;
 
-public class MansionAzazelVisual extends Canvas implements Runnable {
-  private static final long serialVersionUID = 1L;
+/**
+ * Main class for Mansion of Azazel
+ */
+public final class MansionAzazel extends Canvas implements Runnable {
+	private static final long serialVersionUID = 1L;
 
-	public static int playerHealth = 10;
+	private final int WIDTH = 160;
+	private final int HEIGHT = 160;
+	private final int SCALE = 3;
+	private final double UPDATE_RATE = 60;
 
-	private static int width = 160;
-	private static int height = 160;
-	private static int scale = 3;
-	private static String title = "Mansion of Azazel";
+	private String debugFPS = "Frames: 0";
+	private String debugUPS = "Updates: 0";
 
-	private static String debugInfoFrames = "Frames: 0";
-	private static String debugInfoUpdates = "Updates: 0";
-
+	public JFrame frame;
+	public Level level;
 	private Thread thread;
-	private JFrame frame;
+	private Screen screen;
 	private Keyboard key;
-	private StartMenuKeys smk;
-	private Level level;
 	private Player player;
+	private Ghost ghost;
 
 	private boolean running = false;
-	public static boolean startedGame = false;
 
-	private Screen screen;
-
-	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-	public MansionAzazelVisual() {
-		Dimension size = new Dimension(width * scale, height * scale);
-		setPreferredSize(size);
+	/**
+	 * Main constructor
+	 */
+	public MansionAzazel() {
+		setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 
-		screen = new Screen(width, height);
+		screen = new Screen(WIDTH, HEIGHT);
 		frame = new JFrame();
 		key = new Keyboard();
-		smk = new StartMenuKeys();
 		level = Level.spawn;
+		TileCoordinate ghostSpawn = new TileCoordinate(52, 50);
 		TileCoordinate playerSpawn = new TileCoordinate(54, 52);
 		player = new Player(playerSpawn.x(), playerSpawn.y(), key);
 		player.init(level);
+		ghost = new Ghost(ghostSpawn.x(), ghostSpawn.y(), player);
+		ghost.init(level);
+
+		level.addEntity(player);
+		level.addEntity(ghost);
 
 		addKeyListener(key);
-		addKeyListener(smk);
-	}
-
-	public synchronized void start() {
-		running = true;
-		thread = new Thread(this, "Mansion of Azazel_VISUAL");
-		thread.start();
-	}
-
-	public synchronized void stop() {
-		running = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void run() {
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		final double ns = 1000000000d / 60d;
+		final double ns = 1000000000d / UPDATE_RATE;
 		double delta = 0;
 		int frames = 0;
 		int updates = 0;
 		requestFocus();
+
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -104,8 +93,8 @@ public class MansionAzazelVisual extends Canvas implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				debugInfoFrames = ("Frames: " + frames);
-				debugInfoUpdates = ("Updates: " + updates);
+				debugFPS = "Frames: " + frames;
+				debugUPS = "Updates: " + updates;
 				updates = 0;
 				frames = 0;
 			}
@@ -113,102 +102,110 @@ public class MansionAzazelVisual extends Canvas implements Runnable {
 		stop();
 	}
 
-	public void update() {
-		if(startedGame) {
-			key.update();
-			player.update();
+	/**
+	 * Start the game
+	 */
+	public synchronized void start() {
+		running = true;
+		thread = new Thread(this, "Mansion of Azazel");
+		thread.start();
+	}
+
+	/**
+	 * Stop the game
+	 */
+	public synchronized void stop() {
+		running = false;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Update the game
+	 */
+	public void update() {
+		key.update();
+		level.update();
+	}
+
+	/**
+	 * Render the game
+	 */
 	public void render() {
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {
 			createBufferStrategy(3);
 			return;
 		}
-
 		screen.clear();
+		// screen.render();
 
-		final Graphics g = bs.getDrawGraphics();
+		int yScroll = player.y - (screen.height / 2);
+		int xScroll = player.x - (screen.width / 2);
+
+		level.render(xScroll, yScroll, screen);
+		ghost.render(screen);
+		player.render(screen);
+
+		for (int i = 0; i < pixels.length; i++) {
+			pixels[i] = screen.pixels[i];
+		}
+
+		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		Font font = new Font(null, 0, 16);
-		g.setFont(font);
-		g.setColor(Color.WHITE);
-		g.drawString("Health: " + playerHealth, 5, getHeight() - 10);
-
-		if (startedGame) {
-			int xScroll = player.x - screen.width / 2;
-			int yScroll = player.y - screen.height / 2;
-			level.render(xScroll, yScroll, screen);
-			player.render(screen);
-
-			for (int i = 0; i < pixels.length; i++) {
-				pixels[i] = screen.pixels[i];
-			}
-
+		{
+			Font font = new Font("Courier New", 0, 18);
 			if (key.debug) {
-				g.setColor(Color.WHITE);
+				g.setColor(Color.white);
 				g.setFont(font);
-				g.drawString("DEBUG INFO", 5, 15);
-				font = new Font("Courier New", 0, 16);
-				g.setFont(font);
-				g.drawString(debugInfoFrames, 5, 35);
-				g.drawString(debugInfoUpdates, 5, 55);
+				g.drawString("______________", 2, 4);
+				g.drawString(debugFPS, 2, 32);
+				g.drawString(debugUPS, 2, 46);
+				g.drawString("X: " + player.getX() / 16, 2, 60);
+				g.drawString("Y: " + player.getY() / 16, 2, 74);
+				g.drawString("Map: " + level.getLevel(this), 2, 88);
+				g.drawString("______________", 2, 94);
 			}
-		} else {
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, getWidth(), getHeight());
-			font = new Font("Trebuchet MS", 1, 28);
-			g.setFont(font);
-			g.setColor(Color.WHITE);
-			g.drawString("M a n s i o n     o f     A z a z e l", getWidth() / 10, getHeight() / 4);
-			font = new Font("Courier New", 0, 16);
-			g.setFont(font);
-			g.setColor(Color.YELLOW);
-			g.drawString("Press 'Enter' to start a new game", getWidth() / 6, getHeight() / 3 + 20);
-			g.drawString("Press 'Space' to load a previous game", getWidth() / 9 + 5, getHeight() / 3 + 50);
-			g.drawString("Press 'C' to see the credits", getWidth() / 5 + 5, getHeight() / 2);
-			g.drawString("Press 'H' to see the help menu", getWidth() / 5 - 5, getHeight() / 9 * 5 + 5);
-			g.drawString("Press 'Q' to quit.", getWidth() / 3 - 10, getHeight() / 4 * 3);
 		}
 
 		g.dispose();
 		bs.show();
 	}
 	
-	private static void setLookAndFeel() throws Exception {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-	}
-
-	public static void main(String[] args) {
-		MansionAzazelVisual game = new MansionAzazelVisual();
-
-		String iconPath = "/icon/icon.png";
-		InputStream iconStream = MansionAzazelVisual.class.getResourceAsStream(iconPath);
-		BufferedImage icon;
+	/**
+	 * Set the icon of the frame
+	 * @param frame The Window (JFrame)
+	 */
+	public static void setIcon(JFrame frame) {
 		try {
-			icon = ImageIO.read(iconStream);
-			game.frame.setIconImage(icon);
-		} catch (IOException e) {
+			URL iconPath = MansionAzazel.class.getResource("/icons/icon.png");
+			ImageIcon icon = new ImageIcon(iconPath);
+			frame.setIconImage(icon.getImage());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
+	/**
+	 * Loads up the game
+	 */
+	public static void main(String[] args) {
+		MansionAzazel game = new MansionAzazel();
+
+		setIcon(game.frame);
+		game.frame.setTitle("Mansion of Azazel");
 		game.frame.setResizable(false);
-		game.frame.setTitle(title);
 		game.frame.add(game);
 		game.frame.pack();
 		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.frame.setLocationRelativeTo(null);
 		game.frame.setVisible(true);
-		
-		try {
-			setLookAndFeel();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		game.start();
 	}
