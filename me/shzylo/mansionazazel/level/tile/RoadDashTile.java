@@ -1,11 +1,13 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * The part of a street that has dashes on it.
+ */
 public class RoadDashTile extends Tile {
-
-  public RoadDashTile(Sprite sprite) {
+	public RoadDashTile(Sprite sprite) {
 		super(sprite);
 	}
 
