@@ -1,11 +1,14 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * Second half of the boat<br><br>
+ * <b>Solid Tile</b>
+ */
 public class Boat_Tile extends Tile {
-
-  public Boat_Tile(Sprite sprite) {
+	public Boat_Tile(Sprite sprite) {
 		super(sprite);
 	}
 
