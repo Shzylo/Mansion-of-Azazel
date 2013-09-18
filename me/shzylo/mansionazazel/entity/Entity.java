@@ -1,34 +1,55 @@
-package me.shzylo.mansionazazelvisual.entity;
+package me.shzylo.mansionazazel.entity;
 
 import java.util.Random;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.level.Level;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.level.Level;
 
-public class Entity {
-
-  public int x, y;
+/**
+ * Abstract class for all entities
+ */
+public abstract class Entity {
+	public int x, y;
 	private boolean removed = false;
 	protected Level level;
 	protected final Random random = new Random();
 
-	public void update() {
+	/**
+	 * Update the entity
+	 */
+	public abstract void update();
 
-	}
+	/**
+	 * Render the entity to the screen
+	 * 
+	 * @param screen
+	 *           The screen
+	 */
+	public abstract void render(Screen screen);
 
-	public void render(Screen screen) {
-
-	}
-
-	public void remove() { // Remove from level
+	/**
+	 * Remove the entity from the level
+	 */
+	public void remove() {
 		removed = true;
 	}
 
+	/**
+	 * Check if the entity has been removed
+	 * 
+	 * @return if the entity is removed or not
+	 */
 	public boolean isRemoved() {
 		return removed;
 	}
 
-	public void init(Level level) {
+	/**
+	 * Put the entity into the level
+	 * 
+	 * @param level
+	 *           The level the entity will be put into
+	 */
+	public final void init(Level level) {
 		this.level = level;
 	}
 }
