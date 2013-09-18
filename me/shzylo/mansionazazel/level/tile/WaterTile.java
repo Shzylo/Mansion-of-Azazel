@@ -1,11 +1,13 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * Water Tile.
+ */
 public class WaterTile extends Tile {
-
-  public WaterTile(Sprite sprite) {
+	public WaterTile(Sprite sprite) {
 		super(sprite);
 	}
 
