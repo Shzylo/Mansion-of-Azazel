@@ -4,19 +4,14 @@ import me.shzylo.mansionazazel.graphics.Screen;
 import me.shzylo.mansionazazel.graphics.Sprite;
 
 /**
- * Wood pegs, for when the wood tile goes over water<br><br>
- * <b>Solid Tile</b>
+ * The wood tile, located on the deck.
  */
-public class WoodPegTile extends Tile {
-	public WoodPegTile(Sprite sprite) {
+public class WoodTile extends Tile {
+	public WoodTile(Sprite sprite) {
 		super(sprite);
 	}
 
 	public void render(int x, int y, Screen screen) {
 		screen.renderTile(x << 4, y << 4, this);
-	}
-	
-	public boolean isSolid() {
-		return true;
 	}
 }
