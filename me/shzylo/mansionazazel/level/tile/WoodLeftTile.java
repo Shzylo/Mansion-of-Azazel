@@ -1,11 +1,13 @@
-package me.shzylo.mansionazazelvisual.level.tile;
+package me.shzylo.mansionazazel.level.tile;
 
-import me.shzylo.mansionazazelvisual.gfx.Screen;
-import me.shzylo.mansionazazelvisual.gfx.Sprite;
+import me.shzylo.mansionazazel.graphics.Screen;
+import me.shzylo.mansionazazel.graphics.Sprite;
 
+/**
+ * Wood that ends on the left-side, doesn't look tacky
+ */
 public class WoodLeftTile extends Tile {
-
-  public WoodLeftTile(Sprite sprite) {
+	public WoodLeftTile(Sprite sprite) {
 		super(sprite);
 	}
 
