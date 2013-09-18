@@ -4,7 +4,8 @@ import me.shzylo.mansionazazel.graphics.Screen;
 import me.shzylo.mansionazazel.graphics.Sprite;
 
 /**
- * Wood pegs, for when the wood tile goes over water
+ * Wood pegs, for when the wood tile goes over water<br><br>
+ * <b>Solid Tile</b>
  */
 public class WoodPegTile extends Tile {
 	public WoodPegTile(Sprite sprite) {
